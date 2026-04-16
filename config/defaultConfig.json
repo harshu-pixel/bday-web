@@ -1,0 +1,1 @@
+{\n  "name": "Your Name Here",\n  "date": "2026-04-16",\n  "colors": {\n    "background": "#FFFFFF",\n    "text": "#000000"\n  },\n  "theme": "default",\n  "musicUrl": "https://yourmusicurl.com",\n  "photos": [],\n  "animations": {\n    "enabled": true,\n    "type": "fade"\n  }\n}

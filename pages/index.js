@@ -18,7 +18,7 @@ const Dashboard = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <h1>Birthday Website Dashboard</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         <label>

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import styles from './index.module.css';
 
 const Dashboard = () => {
   const [name, setName] = useState('');

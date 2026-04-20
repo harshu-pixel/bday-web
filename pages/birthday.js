@@ -1,13 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import './style.css'; // Assuming there is a CSS file for styles
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
-const BirthdayPage = () => {
+export default function BirthdayPage() {
+  const router = useRouter();
+  const { name, date, theme, colors } = router.query;
+
   const [timeLeft, setTimeLeft] = useState({});
-  
-  // Set your birthday date here, for example: '2026-04-30'
-  const birthdayDate = new Date('2026-04-30T00:00:00');
 
   useEffect(() => {
+    if (!date) return;
+
+    const birthdayDate = new Date(date);
+
     const timer = setInterval(() => {
       const now = new Date();
       const distance = birthdayDate - now;
@@ -18,36 +22,35 @@ const BirthdayPage = () => {
         return;
       }
 
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      setTimeLeft({ days, hours, minutes, seconds });
+      setTimeLeft({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((distance / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((distance / (1000 * 60)) % 60),
+        seconds: Math.floor((distance / 1000) % 60),
+      });
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [birthdayDate]);
+  }, [date]);
 
   return (
-    <div className="birthday-page">
-      <h1>Happy Birthday!</h1>
-      <div className="countdown">
-        <h2>Countdown to your birthday:</h2>
-        <p>{timeLeft.days} days {timeLeft.hours} hours {timeLeft.minutes} minutes {timeLeft.seconds} seconds</p>
-      </div>
-      <div className="gallery">
-        {/* Example photo gallery */}
-        <h2>Photo Gallery</h2>
-        <img src="image1.jpg" alt="Birthday 1" />
-        <img src="image2.jpg" alt="Birthday 2" />
-      </div>
+    <div style={{ textAlign: 'center', padding: '40px' }}>
+      <h1>🎉 Happy Birthday {name || 'Friend'}!</h1>
+
+      <p>Theme: {theme}</p>
+      <p>Colors: {colors}</p>
+
+      <h2>Countdown:</h2>
+      <p>
+        {timeLeft.days || 0}d {timeLeft.hours || 0}h{' '}
+        {timeLeft.minutes || 0}m {timeLeft.seconds || 0}s
+      </p>
+
+      <img src="/cake.jpg" width="200" />
+
       <audio controls autoPlay>
-        <source src="background-music.mp3" type="audio/mpeg" />
-        Your browser does not support the audio element.
+        <source src="/music.mp3" type="audio/mpeg" />
       </audio>
     </div>
   );
-};
-
-export default BirthdayPage;
+}

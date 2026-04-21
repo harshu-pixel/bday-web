@@ -1,56 +1,42 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import styles from '../styles/index.module.css';
 
 export default function Dashboard() {
+  const router = useRouter();
+
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [colors, setColors] = useState('');
   const [theme, setTheme] = useState('');
+  const [secret, setSecret] = useState('');
+  const [image, setImage] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Redirect to birthday page with data
-    window.location.href = `/birthday?name=${name}&date=${date}&theme=${theme}&colors=${colors}`;
+    const imageUrl = image ? URL.createObjectURL(image) : '';
+
+    router.push({
+      pathname: '/birthday',
+      query: { name, date, colors, theme, secret, imageUrl },
+    });
   };
 
   return (
     <div className={styles.container}>
-      <h1>🎂 Birthday Website Dashboard</h1>
+      <h1>🎂 Create Birthday Surprise</h1>
 
       <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
+        <input placeholder="Name" onChange={(e) => setName(e.target.value)} required />
+        <input type="date" onChange={(e) => setDate(e.target.value)} required />
+        <input placeholder="Colors" onChange={(e) => setColors(e.target.value)} />
+        <input placeholder="Theme (dark/pastel)" onChange={(e) => setTheme(e.target.value)} />
+        <input placeholder="Secret Code 🔐" onChange={(e) => setSecret(e.target.value)} />
 
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
+        <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
 
-        <input
-          type="text"
-          placeholder="Favorite Colors"
-          value={colors}
-          onChange={(e) => setColors(e.target.value)}
-          required
-        />
-
-        <input
-          type="text"
-          placeholder="Theme (e.g. party, pastel)"
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          required
-        />
-
-        <button type="submit">Create Birthday Page 🎉</button>
+        <button type="submit">Generate 🎉</button>
       </form>
     </div>
   );

@@ -1,42 +1,53 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import styles from '../styles/index.module.css';
+import styles from '../styles/Home.module.css';
 
-export default function Dashboard() {
+export default function Home() {
   const router = useRouter();
 
-  const [name, setName] = useState('');
-  const [date, setDate] = useState('');
-  const [colors, setColors] = useState('');
-  const [theme, setTheme] = useState('');
-  const [secret, setSecret] = useState('');
-  const [image, setImage] = useState(null);
+  const [form, setForm] = useState({
+    name: '',
+    date: '',
+    theme: 'party',
+    music: '/music.mp3',
+    secret: ''
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const imageUrl = image ? URL.createObjectURL(image) : '';
-
     router.push({
       pathname: '/birthday',
-      query: { name, date, colors, theme, secret, imageUrl },
+      query: form
     });
   };
 
   return (
     <div className={styles.container}>
-      <h1>🎂 Create Birthday Surprise</h1>
+      <h1>🎂 Create a Birthday Surprise</h1>
 
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input placeholder="Name" onChange={(e) => setName(e.target.value)} required />
-        <input type="date" onChange={(e) => setDate(e.target.value)} required />
-        <input placeholder="Colors" onChange={(e) => setColors(e.target.value)} />
-        <input placeholder="Theme (dark/pastel)" onChange={(e) => setTheme(e.target.value)} />
-        <input placeholder="Secret Code 🔐" onChange={(e) => setSecret(e.target.value)} />
+      <form onSubmit={handleSubmit} className={styles.card}>
+        <input placeholder="Name" required
+          onChange={(e)=>setForm({...form, name:e.target.value})} />
 
-        <input type="file" accept="image/*" onChange={(e) => setImage(e.target.files[0])} />
+        <input type="date" required
+          onChange={(e)=>setForm({...form, date:e.target.value})} />
 
-        <button type="submit">Generate 🎉</button>
+        <select onChange={(e)=>setForm({...form, theme:e.target.value})}>
+          <option value="party">🎉 Party</option>
+          <option value="dark">🌙 Dark</option>
+          <option value="pastel">🌸 Pastel</option>
+        </select>
+
+        <select onChange={(e)=>setForm({...form, music:e.target.value})}>
+          <option value="/music.mp3">🎵 Birthday Song</option>
+          <option value="/party.mp3">🎧 Party Beat</option>
+        </select>
+
+        <input placeholder="Secret Code (optional)"
+          onChange={(e)=>setForm({...form, secret:e.target.value})} />
+
+        <button>Generate 🎉</button>
       </form>
     </div>
   );

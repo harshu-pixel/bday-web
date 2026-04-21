@@ -24,30 +24,51 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h1>🎂 Create a Birthday Surprise</h1>
+      <h1 className={styles.title}>🎂 Create a Birthday Surprise</h1>
 
       <form onSubmit={handleSubmit} className={styles.card}>
-        <input placeholder="Name" required
-          onChange={(e)=>setForm({...form, name:e.target.value})} />
+        
+        <input
+          className={styles.input}
+          placeholder="Name"
+          required
+          onChange={(e)=>setForm({...form, name:e.target.value})}
+        />
 
-        <input type="date" required
-          onChange={(e)=>setForm({...form, date:e.target.value})} />
+        <input
+          className={styles.input}
+          type="date"
+          required
+          onChange={(e)=>setForm({...form, date:e.target.value})}
+        />
 
-        <select onChange={(e)=>setForm({...form, theme:e.target.value})}>
+        <select
+          className={styles.select}
+          onChange={(e)=>setForm({...form, theme:e.target.value})}
+        >
           <option value="party">🎉 Party</option>
           <option value="dark">🌙 Dark</option>
           <option value="pastel">🌸 Pastel</option>
         </select>
 
-        <select onChange={(e)=>setForm({...form, music:e.target.value})}>
+        <select
+          className={styles.select}
+          onChange={(e)=>setForm({...form, music:e.target.value})}
+        >
           <option value="/music.mp3">🎵 Birthday Song</option>
           <option value="/party.mp3">🎧 Party Beat</option>
         </select>
 
-        <input placeholder="Secret Code (optional)"
-          onChange={(e)=>setForm({...form, secret:e.target.value})} />
+        <input
+          className={styles.input}
+          placeholder="Secret Code (optional)"
+          onChange={(e)=>setForm({...form, secret:e.target.value})}
+        />
 
-        <button>Generate 🎉</button>
+        <button className={styles.button}>
+          Generate 🎉
+        </button>
+
       </form>
     </div>
   );

@@ -3,17 +3,16 @@
   display:flex;
   justify-content:center;
   align-items:center;
-  background: linear-gradient(135deg,#fbc2eb,#a6c1ee);
+  background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
   overflow:hidden;
   position:relative;
 }
 
-/* 🌸 floating */
 .floating span {
   position:absolute;
   bottom:-50px;
   font-size:24px;
-  animation: floatUp linear infinite;
+  animation:floatUp linear infinite;
 }
 
 @keyframes floatUp {
@@ -22,26 +21,17 @@
 }
 
 .card {
-  backdrop-filter: blur(20px);
-  background: rgba(255,255,255,0.5);
+  backdrop-filter:blur(20px);
+  background:rgba(255,255,255,0.5);
   padding:30px;
   border-radius:25px;
   text-align:center;
 }
 
-.heading {
-  font-size:28px;
-}
+.heading { font-size:28px; }
 
-.message {
-  margin:10px 0;
-}
+.image { width:200px; margin:10px 0; }
 
-.image {
-  width:200px;
-}
-
-/* ⏳ countdown */
 .timer {
   display:flex;
   gap:10px;
@@ -53,19 +43,20 @@
   background:white;
   padding:10px;
   border-radius:10px;
-  box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
 
-.timer span {
-  font-size:20px;
-  font-weight:bold;
-}
-
-/* 🎁 reveal */
 .reveal {
   padding:20px;
-  font-size:18px;
   border-radius:50px;
   background:#ff6fa5;
+  color:white;
+}
+
+.share {
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:black;
   color:white;
 }

@@ -5,12 +5,16 @@ import styles from '../styles/Birthday.module.css';
 
 export default function Birthday() {
   const router = useRouter();
-  const { name, date, message, image, spotify } = router.query;
+  const { query, isReady } = router;
+
+  const { name, date, message, image, spotify } = query;
 
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({});
 
-  const emojis = ["🎈","💖","🌸",];
+  const emojis = ["🎈","💖","🌸","🎁"];
+
+  if (!isReady) return null;
 
   useEffect(() => {
     if (show) {
@@ -39,7 +43,6 @@ export default function Birthday() {
   return (
     <div className={styles.page}>
 
-      {/* 🌸 Floating */}
       <div className={styles.floating}>
         {Array.from({ length: 25 }).map((_, i) => (
           <span key={i}
@@ -59,17 +62,12 @@ export default function Birthday() {
       ) : (
         <div className={styles.card}>
 
-          <h1 className={styles.heading}>
-            🎉 Happy Birthday {name}
-          </h1>
+          <h1>🎉 Happy Birthday {name}</h1>
 
-          <p className={styles.message}>
-            {message || "You deserve something magical 💖"}
-          </p>
+          <p>{message}</p>
 
           {image && <img src={image} className={styles.image} />}
 
-          {/* ⏳ Countdown */}
           <div className={styles.timer}>
             <div><span>{time.d}</span><p>Days</p></div>
             <div><span>{time.h}</span><p>Hours</p></div>
@@ -77,25 +75,14 @@ export default function Birthday() {
             <div><span>{time.s}</span><p>Sec</p></div>
           </div>
 
-          {/* 🎶 Spotify */}
           {spotify && (
             <iframe
               src={`https://open.spotify.com/embed/track/${spotify.split("/track/")[1]}`}
               width="300"
               height="80"
-              allow="autoplay; clipboard-write; encrypted-media"
-            ></iframe>
+              allow="autoplay; encrypted-media"
+            />
           )}
-
-          {/* 🔗 Share */}
-          <button
-            onClick={()=>{
-              navigator.clipboard.writeText(window.location.href)
-            }}
-            className={styles.share}
-          >
-            🔗 Copy Link
-          </button>
 
         </div>
       )}

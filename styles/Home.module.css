@@ -1,26 +1,24 @@
 .container {
   height:100vh;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
-  background: linear-gradient(135deg,#fbc2eb,#a6c1ee);
+  flex-direction:column;
+  background:linear-gradient(135deg,#fbc2eb,#a6c1ee);
 }
 
 .title {
-  font-size:28px;
   margin-bottom:20px;
 }
 
 .card {
-  backdrop-filter: blur(15px);
-  background: rgba(255,255,255,0.6);
+  backdrop-filter:blur(15px);
+  background:rgba(255,255,255,0.6);
   padding:25px;
   border-radius:20px;
   display:flex;
   flex-direction:column;
   gap:10px;
-  width:300px;
 }
 
 .input {
@@ -31,8 +29,8 @@
 
 .button {
   padding:12px;
-  border-radius:12px;
   border:none;
+  border-radius:10px;
   background:#ff6fa5;
   color:white;
 }

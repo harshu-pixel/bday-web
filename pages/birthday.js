@@ -10,7 +10,7 @@ export default function Birthday() {
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({});
 
-  const emojis = ["🎈","💖","🌸","🎁"];
+  const emojis = ["🎈","💖","🌸",];
 
   useEffect(() => {
     if (show) {

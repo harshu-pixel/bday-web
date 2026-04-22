@@ -8,9 +8,8 @@ export default function Home() {
   const [form, setForm] = useState({
     name: '',
     date: '',
-    theme: 'party',
-    music: '/music.mp3',
-    secret: ''
+    message: '',
+    music: '/music.mp3'
   });
 
   const handleSubmit = (e) => {
@@ -24,51 +23,25 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>🎂 Create a Birthday Surprise</h1>
+      <h1 className={styles.title}>🎬 Create Cinematic Birthday</h1>
 
       <form onSubmit={handleSubmit} className={styles.card}>
-        
-        <input
-          className={styles.input}
-          placeholder="Name"
-          required
-          onChange={(e)=>setForm({...form, name:e.target.value})}
-        />
+        <input className={styles.input} placeholder="Name"
+          onChange={(e)=>setForm({...form, name:e.target.value})} required />
 
-        <input
-          className={styles.input}
-          type="date"
-          required
-          onChange={(e)=>setForm({...form, date:e.target.value})}
-        />
+        <input className={styles.input} type="date"
+          onChange={(e)=>setForm({...form, date:e.target.value})} required />
 
-        <select
-          className={styles.select}
-          onChange={(e)=>setForm({...form, theme:e.target.value})}
-        >
-          <option value="party">🎉 Party</option>
-          <option value="dark">🌙 Dark</option>
-          <option value="pastel">🌸 Pastel</option>
+        <input className={styles.input} placeholder="Message 💌"
+          onChange={(e)=>setForm({...form, message:e.target.value})} />
+
+        <select className={styles.input}
+          onChange={(e)=>setForm({...form, music:e.target.value})}>
+          <option value="/music.mp3">🎵 Soft</option>
+          <option value="/party.mp3">🎧 Party</option>
         </select>
 
-        <select
-          className={styles.select}
-          onChange={(e)=>setForm({...form, music:e.target.value})}
-        >
-          <option value="/music.mp3">🎵 Birthday Song</option>
-          <option value="/party.mp3">🎧 Party Beat</option>
-        </select>
-
-        <input
-          className={styles.input}
-          placeholder="Secret Code (optional)"
-          onChange={(e)=>setForm({...form, secret:e.target.value})}
-        />
-
-        <button className={styles.button}>
-          Generate 🎉
-        </button>
-
+        <button className={styles.button}>Create 🎉</button>
       </form>
     </div>
   );

@@ -5,89 +5,85 @@ import styles from '../styles/Birthday.module.css';
 
 export default function Birthday() {
   const router = useRouter();
-  const { name, date, theme, music, secret } = router.query;
+  const { name, date, message, music } = router.query;
 
   const [show, setShow] = useState(false);
-  const [access, setAccess] = useState(!secret);
-  const [input, setInput] = useState('');
   const [time, setTime] = useState({});
 
-  // 🎊 Confetti burst
+  const emojis = ["🎈","💖","🌸"];
+
+  // 🎊 Confetti
   useEffect(() => {
     if (show) {
-      confetti({ particleCount: 200, spread: 100 });
+      confetti({ particleCount: 200, spread: 120 });
     }
   }, [show]);
 
   // ⏳ Countdown
   useEffect(() => {
     if (!date) return;
+
     const t = setInterval(() => {
       const diff = new Date(date) - new Date();
       if (diff <= 0) return;
 
       setTime({
-        d: Math.floor(diff / (1000*60*60*24)),
-        h: Math.floor((diff / (1000*60*60))%24),
-        m: Math.floor((diff / (1000*60))%60),
+        d: Math.floor(diff/(1000*60*60*24)),
+        h: Math.floor((diff/(1000*60*60))%24),
+        m: Math.floor((diff/(1000*60))%60),
         s: Math.floor((diff/1000)%60)
       });
     }, 1000);
+
     return ()=>clearInterval(t);
   }, [date]);
 
-  // 🔐 Lock
-  if (!access) {
-    return (
-      <div className={styles.lock}>
-        <h2>🔐 Private Page</h2>
-        <input placeholder="Enter Code"
-          onChange={(e)=>setInput(e.target.value)} />
-        <button onClick={()=> input===secret && setAccess(true)}>
-          Unlock
-        </button>
-      </div>
-    );
-  }
-
-  const themes = {
-    dark: styles.dark,
-    pastel: styles.pastel,
-    party: styles.party
-  };
-
   return (
-    <div className={`${styles.page} ${themes[theme]}`}>
+    <div className={styles.page}>
 
-      {/* 🎥 video bg */}
-      <video autoPlay loop muted className={styles.video}>
-        <source src="/bg.mp4" />
-      </video>
+      {/* 🌸 Floating */}
+      <div className={styles.floating}>
+        {Array.from({ length: 25 }).map((_, i) => (
+          <span key={i}
+            style={{
+              left: Math.random()*100+"%",
+              animationDuration: (6 + Math.random()*6)+"s"
+            }}>
+            {emojis[i % 3]}
+          </span>
+        ))}
+      </div>
 
       {!show ? (
-        <button className={styles.reveal}
-          onClick={()=>setShow(true)}>
-          🎁 Tap to Reveal
+        <button className={styles.reveal} onClick={()=>setShow(true)}>
+          🎁 Tap to Begin
         </button>
       ) : (
         <div className={styles.card}>
-          <h1>🎉 Happy Birthday {name}!</h1>
 
-          <p className={styles.count}>
-            {time.d}d {time.h}h {time.m}m {time.s}s
+          <h1 className={styles.heading}>
+            🎉 Happy Birthday {name}
+          </h1>
+
+          <p className={styles.message}>
+            {message || "You deserve something magical 💖"}
           </p>
 
-          <img src="/cake.jpg" className={styles.img} />
+          <img src="/cake.jpg" className={styles.image}/>
 
+          {/* ⏳ Countdown */}
+          <div className={styles.timer}>
+            <div><span>{time.d}</span><p>Days</p></div>
+            <div><span>{time.h}</span><p>Hours</p></div>
+            <div><span>{time.m}</span><p>Min</p></div>
+            <div><span>{time.s}</span><p>Sec</p></div>
+          </div>
+
+          {/* 🎵 Music */}
           <audio controls autoPlay loop>
-            <source src={music} />
+            <source src={music || "/music.mp3"} />
           </audio>
 
-          <button onClick={()=>{
-            navigator.clipboard.writeText(window.location.href)
-          }}>
-            🔗 Share Link
-          </button>
         </div>
       )}
     </div>

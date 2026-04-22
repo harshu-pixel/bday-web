@@ -9,37 +9,66 @@ export default function Home() {
     name: '',
     date: '',
     message: '',
-    music: '/music.mp3'
+    spotify: ''
   });
 
-  const handleSubmit = (e) => {
+  const [image, setImage] = useState(null);
+
+  const uploadImage = async () => {
+    if (!image) return '';
+
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "unsigned_preset");
+
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload",
+      {
+        method: "POST",
+        body: data
+      }
+    );
+
+    const file = await res.json();
+    return file.secure_url;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const imageUrl = await uploadImage();
 
     router.push({
       pathname: '/birthday',
-      query: form
+      query: { ...form, image: imageUrl }
     });
   };
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>🎬 Create Cinematic Birthday</h1>
+      <h1 className={styles.title}>🎬 Create Birthday Experience</h1>
 
       <form onSubmit={handleSubmit} className={styles.card}>
-        <input className={styles.input} placeholder="Name"
-          onChange={(e)=>setForm({...form, name:e.target.value})} required />
+        <input className={styles.input}
+          placeholder="Name"
+          onChange={(e)=>setForm({...form, name:e.target.value})}
+          required />
 
-        <input className={styles.input} type="date"
-          onChange={(e)=>setForm({...form, date:e.target.value})} required />
+        <input className={styles.input}
+          type="date"
+          onChange={(e)=>setForm({...form, date:e.target.value})}
+          required />
 
-        <input className={styles.input} placeholder="Message 💌"
+        <input className={styles.input}
+          placeholder="Message 💌"
           onChange={(e)=>setForm({...form, message:e.target.value})} />
 
-        <select className={styles.input}
-          onChange={(e)=>setForm({...form, music:e.target.value})}>
-          <option value="/music.mp3">🎵 Soft</option>
-          <option value="/party.mp3">🎧 Party</option>
-        </select>
+        <input className={styles.input}
+          placeholder="Spotify Track URL 🎶"
+          onChange={(e)=>setForm({...form, spotify:e.target.value})} />
+
+        <input type="file"
+          onChange={(e)=>setImage(e.target.files[0])} />
 
         <button className={styles.button}>Create 🎉</button>
       </form>

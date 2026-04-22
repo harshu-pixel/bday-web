@@ -14,7 +14,7 @@ export default function Home() {
 
   const [image, setImage] = useState(null);
 
-  // 📸 Upload to Cloudinary
+  // 📸 Upload image to Cloudinary
   const uploadImage = async () => {
     if (!image) return '';
 
@@ -47,24 +47,45 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.title}>🎬 Create Birthday</h1>
+      <h1 className={styles.title}>🎬 Create Birthday Experience</h1>
 
       <form onSubmit={handleSubmit} className={styles.card}>
-        <input className={styles.input} placeholder="Name"
-          required onChange={(e)=>setForm({...form, name:e.target.value})} />
 
-        <input className={styles.input} type="date"
-          required onChange={(e)=>setForm({...form, date:e.target.value})} />
+        <input
+          className={styles.input}
+          placeholder="Name"
+          required
+          onChange={(e)=>setForm({...form, name:e.target.value})}
+        />
 
-        <input className={styles.input} placeholder="Message"
-          onChange={(e)=>setForm({...form, message:e.target.value})} />
+        <input
+          className={styles.input}
+          type="date"
+          required
+          onChange={(e)=>setForm({...form, date:e.target.value})}
+        />
 
-        <input className={styles.input} placeholder="Spotify Link"
-          onChange={(e)=>setForm({...form, spotify:e.target.value})} />
+        <input
+          className={styles.input}
+          placeholder="Message 💌"
+          onChange={(e)=>setForm({...form, message:e.target.value})}
+        />
 
-        <input type="file" onChange={(e)=>setImage(e.target.files[0])} />
+        <input
+          className={styles.input}
+          placeholder="Spotify Track Link 🎶"
+          onChange={(e)=>setForm({...form, spotify:e.target.value})}
+        />
 
-        <button className={styles.button}>Create 🎉</button>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e)=>setImage(e.target.files[0])}
+        />
+
+        <button className={styles.button}>
+          Create 🎉
+        </button>
       </form>
     </div>
   );

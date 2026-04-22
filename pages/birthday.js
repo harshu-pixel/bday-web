@@ -11,17 +11,20 @@ export default function Birthday() {
 
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({});
+  const [copied, setCopied] = useState(false);
 
-  const emojis = ["🎈","💖","🌸","🎁"];
+  const emojis = ["🎈","💖","🌸"];
 
   if (!isReady) return null;
 
+  // 🎊 Confetti
   useEffect(() => {
     if (show) {
       confetti({ particleCount: 200, spread: 120 });
     }
   }, [show]);
 
+  // ⏳ Countdown
   useEffect(() => {
     if (!date) return;
 
@@ -40,9 +43,24 @@ export default function Birthday() {
     return ()=>clearInterval(t);
   }, [date]);
 
+  // 🔗 Copy link
+  const copyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  // 📲 WhatsApp share
+  const shareWhatsApp = () => {
+    const text = `🎉 Check this Birthday Surprise for ${name}! 💖`;
+    const url = window.location.href;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text + " " + url)}`);
+  };
+
   return (
     <div className={styles.page}>
 
+      {/* 🌸 Floating */}
       <div className={styles.floating}>
         {Array.from({ length: 25 }).map((_, i) => (
           <span key={i}
@@ -62,12 +80,17 @@ export default function Birthday() {
       ) : (
         <div className={styles.card}>
 
-          <h1>🎉 Happy Birthday {name}</h1>
+          <h1 className={styles.heading}>
+            🎉 Happy Birthday {name}
+          </h1>
 
-          <p>{message}</p>
+          <p className={styles.message}>
+            {message || "You deserve something magical 💖"}
+          </p>
 
           {image && <img src={image} className={styles.image} />}
 
+          {/* ⏳ Countdown */}
           <div className={styles.timer}>
             <div><span>{time.d}</span><p>Days</p></div>
             <div><span>{time.h}</span><p>Hours</p></div>
@@ -75,6 +98,7 @@ export default function Birthday() {
             <div><span>{time.s}</span><p>Sec</p></div>
           </div>
 
+          {/* 🎶 Spotify */}
           {spotify && (
             <iframe
               src={`https://open.spotify.com/embed/track/${spotify.split("/track/")[1]}`}
@@ -83,6 +107,17 @@ export default function Birthday() {
               allow="autoplay; encrypted-media"
             />
           )}
+
+          {/* 🔗 PREMIUM SHARE UI */}
+          <div className={styles.shareBox}>
+            <button onClick={copyLink} className={styles.shareBtn}>
+              {copied ? "✅ Copied!" : "🔗 Copy Link"}
+            </button>
+
+            <button onClick={shareWhatsApp} className={styles.whatsapp}>
+              📲 WhatsApp
+            </button>
+          </div>
 
         </div>
       )}

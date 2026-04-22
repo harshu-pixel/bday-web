@@ -5,21 +5,19 @@ import styles from '../styles/Birthday.module.css';
 
 export default function Birthday() {
   const router = useRouter();
-  const { name, date, message, music } = router.query;
+  const { name, date, message, image, spotify } = router.query;
 
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({});
 
   const emojis = ["🎈","💖","🌸"];
 
-  // 🎊 Confetti
   useEffect(() => {
     if (show) {
       confetti({ particleCount: 200, spread: 120 });
     }
   }, [show]);
 
-  // ⏳ Countdown
   useEffect(() => {
     if (!date) return;
 
@@ -69,7 +67,7 @@ export default function Birthday() {
             {message || "You deserve something magical 💖"}
           </p>
 
-          <img src="/cake.jpg" className={styles.image}/>
+          {image && <img src={image} className={styles.image} />}
 
           {/* ⏳ Countdown */}
           <div className={styles.timer}>
@@ -79,10 +77,25 @@ export default function Birthday() {
             <div><span>{time.s}</span><p>Sec</p></div>
           </div>
 
-          {/* 🎵 Music */}
-          <audio controls autoPlay loop>
-            <source src={music || "/music.mp3"} />
-          </audio>
+          {/* 🎶 Spotify */}
+          {spotify && (
+            <iframe
+              src={`https://open.spotify.com/embed/track/${spotify.split("/track/")[1]}`}
+              width="300"
+              height="80"
+              allow="autoplay; clipboard-write; encrypted-media"
+            ></iframe>
+          )}
+
+          {/* 🔗 Share */}
+          <button
+            onClick={()=>{
+              navigator.clipboard.writeText(window.location.href)
+            }}
+            className={styles.share}
+          >
+            🔗 Copy Link
+          </button>
 
         </div>
       )}

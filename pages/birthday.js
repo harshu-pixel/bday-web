@@ -7,15 +7,21 @@ export default function Birthday() {
   const router = useRouter();
   const { query, isReady } = router;
 
-  const { name, date, message, image, spotify } = query;
-
   const [show, setShow] = useState(false);
   const [time, setTime] = useState({});
   const [copied, setCopied] = useState(false);
 
   const emojis = ["🎈","💖","🌸"];
 
+  // ✅ Prevent crash before query loads
   if (!isReady) return null;
+
+  // ✅ Safe values (no undefined crash)
+  const name = query.name || "Someone Special 💖";
+  const date = query.date || null;
+  const message = query.message || "You deserve something magical ✨";
+  const image = query.image || "";
+  const spotify = query.spotify || "";
 
   // 🎊 Confetti
   useEffect(() => {
@@ -24,7 +30,7 @@ export default function Birthday() {
     }
   }, [show]);
 
-  // ⏳ Countdown
+  // ⏳ Countdown (safe)
   useEffect(() => {
     if (!date) return;
 
@@ -40,7 +46,7 @@ export default function Birthday() {
       });
     }, 1000);
 
-    return ()=>clearInterval(t);
+    return () => clearInterval(t);
   }, [date]);
 
   // 🔗 Copy link
@@ -60,7 +66,7 @@ export default function Birthday() {
   return (
     <div className={styles.page}>
 
-      {/* 🌸 Floating */}
+      {/* 🌸 Floating emojis */}
       <div className={styles.floating}>
         {Array.from({ length: 25 }).map((_, i) => (
           <span key={i}
@@ -85,21 +91,26 @@ export default function Birthday() {
           </h1>
 
           <p className={styles.message}>
-            {message || "You deserve something magical 💖"}
+            {message}
           </p>
 
-          {image && <img src={image} className={styles.image} />}
+          {/* 📸 Image (safe) */}
+          {image && (
+            <img src={image} className={styles.image} />
+          )}
 
           {/* ⏳ Countdown */}
-          <div className={styles.timer}>
-            <div><span>{time.d}</span><p>Days</p></div>
-            <div><span>{time.h}</span><p>Hours</p></div>
-            <div><span>{time.m}</span><p>Min</p></div>
-            <div><span>{time.s}</span><p>Sec</p></div>
-          </div>
+          {date && (
+            <div className={styles.timer}>
+              <div><span>{time.d || 0}</span><p>Days</p></div>
+              <div><span>{time.h || 0}</span><p>Hours</p></div>
+              <div><span>{time.m || 0}</span><p>Min</p></div>
+              <div><span>{time.s || 0}</span><p>Sec</p></div>
+            </div>
+          )}
 
-          {/* 🎶 Spotify */}
-          {spotify && (
+          {/* 🎶 Spotify (SAFE FIX) */}
+          {spotify && spotify.includes("/track/") && (
             <iframe
               src={`https://open.spotify.com/embed/track/${spotify.split("/track/")[1]}`}
               width="300"
@@ -110,6 +121,7 @@ export default function Birthday() {
 
           {/* 🔗 PREMIUM SHARE UI */}
           <div className={styles.shareBox}>
+
             <button onClick={copyLink} className={styles.shareBtn}>
               {copied ? "✅ Copied!" : "🔗 Copy Link"}
             </button>
@@ -117,6 +129,7 @@ export default function Birthday() {
             <button onClick={shareWhatsApp} className={styles.whatsapp}>
               📲 WhatsApp
             </button>
+
           </div>
 
         </div>
